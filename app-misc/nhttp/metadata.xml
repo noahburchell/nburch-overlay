@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>noah@nburch.org</email>
+		<name>Noah Burchell</name>
+	</maintainer>
+	<upstream>
+		<maintainer status="active">
+			<email>noah@nburch.org</email>
+			<name>Noah Burchell</name>
+		</maintainer>
+		<bugs-to>https://github.com/noahburchell/nhttp/issues</bugs-to>
+		<remote-id type="github">noahburchell/nhttp</remote-id>
+	</upstream>
+</pkgmetadata>
