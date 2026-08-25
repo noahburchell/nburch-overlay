@@ -49,6 +49,9 @@ emerge --ask app-misc/cube
 echo 'app-misc/claude-desktop all-rights-reserved' >> /etc/portage/package.license
 emerge --ask app-misc/claude-desktop
 ```
+## contact
+
+if you have any questions contact me: overlay@nburch.org
 
 ## license
 
