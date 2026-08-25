@@ -9,7 +9,7 @@ DESCRIPTION="minimal http server"
 HOMEPAGE="https://github.com/noahburchell/nhttp"
 SRC_URI="https://github.com/noahburchell/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 
-LICENSE="GPL-3"
+LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="amd64 arm64 x86"
 
