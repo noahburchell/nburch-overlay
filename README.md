@@ -5,7 +5,7 @@
 | package | description |
 | --- | --- |
 | `app-misc/cube` | spinning cube <br /> (and platonic solids) |
-| `app-misc/vufetch` | very useful fetch |
+| `app-misc/vufetch` | very useful fetch (unfinished) |
 | `app-misc/claude-desktop` | ⚠️ PROPRIETARY ⚠️ <br /> repackaged Anthropic's <br /> official .deb | 
 
 ## usage
