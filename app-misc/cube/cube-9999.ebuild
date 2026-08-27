@@ -19,6 +19,8 @@ pkg_pretend() {
 
 	if tc-is-gcc && [[ $(gcc-major-version) -lt 14 ]]; then
 		die "GCC 14 or newer is required, found $(gcc-fullversion)"
+	elif tc-is-clang && [[ $(clang-major-version) -lt 19 ]]; then
+		die "Clang 19 or newer is required, found $(clang-fullversion)"
 	fi
 }
 
