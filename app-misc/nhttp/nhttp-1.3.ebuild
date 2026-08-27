@@ -31,7 +31,7 @@ pkg_postinst() {
 	elog "This is recommended over running it with sudo: nhttp does not drop"
 	elog "privileges, so under sudo the forked request handlers stay root."
 	elog
-	elog "The port, the 10s read/write timeout and the 8192 byte request cap"
-	elog "are compile-time constants; changing them means editing src/main.c"
-	elog "and rebuilding. nhttp is IPv4 only."
+	elog "The port, the 10s read/write timeout, the 8192 byte header cap and"
+	elog "the 128 connection limit are compile-time constants; changing them"
+	elog "means editing src/main.c and rebuilding. nhttp is IPv4 only."
 }

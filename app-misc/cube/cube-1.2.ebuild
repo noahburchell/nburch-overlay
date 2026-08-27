@@ -31,3 +31,8 @@ src_install() {
 	emake DESTDIR="${D}" PREFIX="${EPREFIX}/usr" install
 	einstalldocs
 }
+
+pkg_postinst() {
+	elog "run 'cube --help' for shape list"
+}
+
