@@ -15,26 +15,26 @@
 
 ```sh
 emerge --ask app-eselect/eselect-repository
-eselect repository add noahburchell git https://github.com/noahburchell/noahburchell-overlay.git
-emaint sync --repo noahburchell
+eselect repository add nburch git https://github.com/noahburchell/nburch-overlay.git
+emaint sync --repo nburch
 ```
 
 ### manually
 
-create `/etc/portage/repos.conf/noahburchell.conf`:
+create `/etc/portage/repos.conf/nburch.conf`:
 
 ```ini
-[noahburchell]
-location = /var/db/repos/noahburchell
+[nburch]
+location = /var/db/repos/nburch
 sync-type = git
-sync-uri = https://github.com/noahburchell/noahburchell-overlay.git
+sync-uri = https://github.com/noahburchell/nburch-overlay.git
 auto-sync = yes
 ```
 
 then:
 
 ```sh
-emaint sync --repo noahburchell
+emaint sync --repo nburch
 ```
 
 ### installing
