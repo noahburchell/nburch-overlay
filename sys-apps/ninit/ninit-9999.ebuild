@@ -48,6 +48,7 @@ src_compile() {
 
 src_install() {
 	emake CC="$(tc-getCC)" USE="$(ninit_use)" DESTDIR="${D}" PREFIX=/usr install
+	emake CC="$(tc-getCC)" USE="$(ninit_use)" DESTDIR="${D}" PREFIX=/usr tools_install
 	keepdir /etc/ninit.d
 }
 
