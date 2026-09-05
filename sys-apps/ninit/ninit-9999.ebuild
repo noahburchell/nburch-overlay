@@ -55,7 +55,6 @@ pkg_postinst() {
 	elog "Put service files in /etc/ninit.d and compile them with:"
 	elog "    ninitctl init"
 	elog "then boot with init=/usr/sbin/ninit on the kernel command line."
-	elog "Shut down with: kill -USR2 1 (poweroff), kill -TERM 1 (reboot), kill -USR1 1 (halt)."
 	if use debug; then
 		ewarn "USE=debug builds pid 1 with sanitizers; do not run this on a real machine."
 	fi
