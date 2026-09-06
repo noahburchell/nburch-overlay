@@ -12,7 +12,7 @@ EGIT_REPO_URI="https://github.com/noahburchell/ninit.git"
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE="busybox debug quiet"
+IUSE="busybox debug quiet authshell"
 RESTRICT="mirror bindist"
 
 RDEPEND="
@@ -38,6 +38,7 @@ ninit_use() {
 	use quiet && u+=( quiet )
 	use busybox && u+=( busybox )
 	use debug && u+=( debug )
+	use authshell && u+=( authshell )
 	echo "${u[*]}"
 }
 
