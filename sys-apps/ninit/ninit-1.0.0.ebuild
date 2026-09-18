@@ -3,16 +3,16 @@
 
 EAPI=8
 
-inherit autotools git-r3 toolchain-funcs
+inherit toolchain-funcs
 
 DESCRIPTION="small init"
 HOMEPAGE="https://github.com/noahburchell/ninit"
-EGIT_REPO_URI="https://github.com/noahburchell/ninit.git"
+SRC_URI="https://github.com/noahburchell/${PN}/releases/download/v${PV}/${P}.tar.xz"
 
 LICENSE="GPL-3"
 SLOT="0"
+KEYWORDS="amd64 ~arm64 ~x86"
 
-KEYWORDS=""
 IUSE="authshell busybox debug lto native o3 quiet"
 REQUIRED_USE="debug? ( !lto !native !o3 )"
 RESTRICT="native? ( bindist )"
@@ -22,20 +22,16 @@ RDEPEND="
 	authshell? ( sys-apps/util-linux )
 	busybox? ( sys-apps/busybox )
 "
-PROPERTIES="live"
 
-pkg_setup() {
+pkg_pretend() {
+	[[ ${MERGE_TYPE} == binary ]] && return
+
 	if tc-is-gcc && [[ $(gcc-major-version) -lt 14 ]]; then
 		die "ninit needs gcc 14 or newer (or clang 18+) for -std=gnu23"
 	fi
 	if tc-is-clang && [[ $(clang-major-version) -lt 18 ]]; then
 		die "ninit needs clang 18 or newer for -std=gnu23"
 	fi
-}
-
-src_prepare() {
-	default
-	eautoreconf
 }
 
 ninit_no_user_flags() {
