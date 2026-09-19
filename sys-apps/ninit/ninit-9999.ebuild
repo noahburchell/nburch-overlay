@@ -13,7 +13,7 @@ LICENSE="GPL-3"
 SLOT="0"
 
 KEYWORDS=""
-IUSE="authshell busybox debug lto native o3 quiet"
+IUSE="authshell busybox debug lto native o3 quiet +tools"
 REQUIRED_USE="debug? ( !lto !native !o3 )"
 RESTRICT="native? ( bindist )"
 
@@ -71,7 +71,7 @@ src_compile() {
 src_install() {
 	ninit_no_user_flags
 	default
-	emake DESTDIR="${D}" tools-install
+	use tools && emake DESTDIR="${D}" tools-install
 	dodoc -r docs/ninit.d
 	keepdir /etc/ninit.d
 }
@@ -86,11 +86,20 @@ pkg_postinst() {
 		ewarn "USE=debug builds pid 1 with sanitizers"
 	fi
 
-	local n
-	for n in shutdown poweroff halt reboot telinit; do
-		if [[ -e ${EROOT}/sbin/${n}.old ]]; then
-			elog "${n} was saved as ${n}.old; 'emake tools-uninstall' puts it back."
-			break
-		fi
-	done
+	if use tools; then
+		local n
+		for n in shutdown poweroff halt reboot telinit; do
+			if [[ -e ${EROOT}/sbin/${n}.old ]]; then
+				elog "${n} was saved as ${n}.old; 'emake tools-uninstall' puts it back."
+				break
+			fi
+		done
+	else
+		ewarn "USE=-tools skips the shutdown/poweroff/halt/reboot/telinit binaries."
+		ewarn "Signal pid 1 directly instead:"
+		ewarn "    kill -TERM 1   # reboot (also ctrl-alt-del)"
+		ewarn "    kill -USR2 1   # poweroff"
+		ewarn "    kill -USR1 1   # halt"
+		ewarn "busybox reboot, poweroff and halt send the same signals."
+	fi
 }

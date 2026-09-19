@@ -12,6 +12,7 @@
 		<flag name="native">-march=native ;)</flag>
 		<flag name="o3">Compile at -O3 instead of -O2</flag>
 		<flag name="quiet">Only print warnings and failures on the console during boot</flag>
+		<flag name="tools">Installs the shutdown/restart/poweroff binaries for convenience</flag>
 	</use>
 	<upstream>
 		<remote-id type="github">noahburchell/ninit</remote-id>
