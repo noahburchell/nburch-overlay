@@ -6,12 +6,10 @@
 		<name>Noah Burchell</name>
 	</maintainer>
 	<use>
-		<flag name="authshell">Spawn sulogin before the emergency shell when root has a usable password</flag>
 		<flag name="busybox">Try /bin/busybox before /bin/sh for the emergency shell</flag>
 		<flag name="debug">Build unoptimised with AddressSanitizer and UndefinedBehaviorSanitizer (testing only)</flag>
 		<flag name="hardened">Build with _FORTIFY_SOURCE=3, -fcf-protection=full and further hardening flags</flag>
 		<flag name="native">-march=native ;)</flag>
-		<flag name="o3">Compile at -O3 instead of -O2</flag>
 		<flag name="quiet">Only print warnings and failures on the console during boot</flag>
 		<flag name="sulogin">Spawn sulogin before the emergency shell when root has a usable password</flag>
 		<flag name="tools">Installs the shutdown/restart/poweroff binaries for convenience</flag>

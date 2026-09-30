@@ -13,13 +13,13 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
 
-IUSE="authshell busybox debug lto native o3 quiet +tools"
-REQUIRED_USE="debug? ( !lto !native !o3 )"
+IUSE="busybox debug hardened native quiet sulogin +tools"
+REQUIRED_USE="debug? ( !native )"
 RESTRICT="native? ( bindist )"
 
 RDEPEND="
 	app-shells/bash
-	authshell? ( sys-apps/util-linux )
+	sulogin? ( sys-apps/util-linux )
 	busybox? ( sys-apps/busybox )
 "
 
@@ -34,12 +34,7 @@ pkg_pretend() {
 	fi
 }
 
-ninit_no_user_flags() {
-	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
-}
-
 src_configure() {
-	ninit_no_user_flags
 	tc-export CC
 
 	local myconf=(
@@ -47,25 +42,18 @@ src_configure() {
 		--with-service-dir="${EPREFIX}"/etc/ninit.d
 		--with-shell="${EPREFIX}"/bin/bash
 		--with-shell-name=bash
-		$(use_enable authshell)
 		$(use_enable debug)
-		$(use_enable lto)
+		$(use_enable hardened)
 		$(use_enable native)
-		$(use_enable o3)
 		$(use_enable quiet)
+		$(use_with sulogin)
 		$(usex busybox --with-busybox="${EPREFIX}"/bin/busybox --without-busybox)
 	)
 
 	econf "${myconf[@]}"
 }
 
-src_compile() {
-	ninit_no_user_flags
-	default
-}
-
 src_install() {
-	ninit_no_user_flags
 	default
 	use tools && emake DESTDIR="${D}" tools-install
 	dodoc -r docs/ninit.d
