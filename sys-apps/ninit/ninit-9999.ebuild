@@ -84,6 +84,7 @@ src_install() {
 	default
 	use tools && emake DESTDIR="${D}" tools-install
 	dodoc -r docs/ninit.d
+	docompress -x /usr/share/doc/${PF}/ninit.d
 	keepdir /etc/ninit.d
 }
 
