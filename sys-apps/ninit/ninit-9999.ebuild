@@ -71,9 +71,8 @@ src_test() {
 	elif [[ ! -r ${NINIT_TEST_KERNEL} ]]; then
 		die "NINIT_TEST_KERNEL=${NINIT_TEST_KERNEL} is not readable"
 	fi
-	if [[ -c /dev/kvm && -r /dev/kvm && -w /dev/kvm ]]; then
-		addwrite /dev/kvm
-	else
+	addwrite /dev/kvm
+	if [[ ! -c /dev/kvm || ! -r /dev/kvm || ! -w /dev/kvm ]]; then
 		ewarn "/dev/kvm is not usable by portage, the qemu tests run under tcg"
 	fi
 
