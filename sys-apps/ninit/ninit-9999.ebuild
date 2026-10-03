@@ -13,14 +13,20 @@ LICENSE="GPL-3"
 SLOT="0"
 
 KEYWORDS=""
-IUSE="busybox debug hardened native quiet sulogin +tools"
-REQUIRED_USE="debug? ( !native )"
-RESTRICT="native? ( bindist )"
+IUSE="busybox debug hardened quiet sulogin test +tools"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	app-shells/bash
 	sulogin? ( sys-apps/util-linux )
 	busybox? ( sys-apps/busybox )
+"
+BDEPEND="
+	test? (
+		amd64? ( app-emulation/qemu[qemu_softmmu_targets_x86_64] )
+		sys-apps/busybox[static]
+		sys-apps/util-linux
+	)
 "
 PROPERTIES="live"
 
@@ -48,13 +54,30 @@ src_configure() {
 		--with-shell-name=bash
 		$(use_enable debug)
 		$(use_enable hardened)
-		$(use_enable native)
 		$(use_enable quiet)
 		$(use_with sulogin)
 		$(usex busybox --with-busybox="${EPREFIX}"/bin/busybox --without-busybox)
 	)
 
 	econf "${myconf[@]}"
+}
+
+src_test() {
+	# the qemu tests boot the kernel named here, set it in /etc/portage/env
+	local -x NINIT_TEST_KERNEL=${NINIT_TEST_KERNEL}
+
+	if [[ -z ${NINIT_TEST_KERNEL} ]]; then
+		ewarn "NINIT_TEST_KERNEL is not set, the qemu tests are skipped"
+	elif [[ ! -r ${NINIT_TEST_KERNEL} ]]; then
+		die "NINIT_TEST_KERNEL=${NINIT_TEST_KERNEL} is not readable"
+	fi
+	if [[ -c /dev/kvm && -r /dev/kvm && -w /dev/kvm ]]; then
+		addwrite /dev/kvm
+	else
+		ewarn "/dev/kvm is not usable by portage, the qemu tests run under tcg"
+	fi
+
+	emake check
 }
 
 src_install() {
