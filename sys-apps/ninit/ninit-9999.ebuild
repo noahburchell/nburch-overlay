@@ -3,7 +3,9 @@
 
 EAPI=8
 
-inherit autotools git-r3 toolchain-funcs
+PYTHON_COMPAT=( python3_{11..15} )
+
+inherit autotools git-r3 python-any-r1 toolchain-funcs
 
 DESCRIPTION="small init"
 HOMEPAGE="https://github.com/noahburchell/ninit"
@@ -24,6 +26,9 @@ RDEPEND="
 BDEPEND="
 	test? (
 		amd64? ( app-emulation/qemu[qemu_softmmu_targets_x86_64] )
+		dev-lang/lua
+		dev-lang/perl
+		${PYTHON_DEPS}
 		sys-apps/busybox[static]
 		sys-apps/util-linux
 	)
@@ -31,6 +36,7 @@ BDEPEND="
 PROPERTIES="live"
 
 pkg_setup() {
+	use test && python-any-r1_pkg_setup
 	if tc-is-gcc && [[ $(gcc-major-version) -lt 14 ]]; then
 		die "ninit needs gcc 14 or newer (or clang 18+) for -std=gnu23"
 	fi
