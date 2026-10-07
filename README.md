@@ -6,6 +6,7 @@
 | --- | --- |
 | `app-misc/cube` | spinning cube <br /> (and platonic solids) |
 | `sys-apps/ninit` | small init system |
+| `gui-apps/tile` | autotiling for sway |
 | `app-misc/nhttp` | minimal http server |
 | `app-misc/vufetch` | very useful fetch <br /> (live ebuild only, <br /> no release yet) |
 | `app-misc/claude-desktop` | ⚠️ PROPRIETARY ⚠️ <br /> repackaged Anthropic's <br /> official .deb | 
