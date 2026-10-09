@@ -93,6 +93,14 @@ src_install() {
 }
 
 pkg_postinst() {
+	local g=${EROOT}/etc/ninit.d/depgraph why
+
+	# a graph of another format version is refused at boot
+	if [[ -z ${ROOT} && -e ${g} ]] && ! why=$("${EPREFIX}"/sbin/ninitctl show -f "${g}" 2>&1 >/dev/null); then
+		ewarn "${why}"
+		ewarn "ninit ${PV} cannot load ${g}, run 'ninitctl init' before rebooting"
+	fi
+
 	elog "Example service files are in ${EROOT}/usr/share/doc/${PF}/ninit.d."
 	elog "Put service files in /etc/ninit.d and compile them with:"
 	elog "    ninitctl init"
