@@ -5,7 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..15} )
 
-inherit autotools git-r3 python-any-r1 toolchain-funcs
+inherit autotools fcaps git-r3 python-any-r1 toolchain-funcs
 
 DESCRIPTION="small init"
 HOMEPAGE="https://github.com/noahburchell/ninit"
@@ -15,15 +15,17 @@ LICENSE="GPL-3"
 SLOT="0"
 
 KEYWORDS=""
-IUSE="busybox debug hardened quiet sulogin test +tools"
+IUSE="busybox debug hardened power quiet sulogin test +tools"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
 	app-shells/bash
+	power? ( acct-group/power )
 	sulogin? ( sys-apps/util-linux )
 	busybox? ( sys-apps/busybox )
 "
 BDEPEND="
+	power? ( acct-group/power )
 	test? (
 		amd64? ( app-emulation/qemu[qemu_softmmu_targets_x86_64] )
 		dev-lang/lua
@@ -34,6 +36,8 @@ BDEPEND="
 	)
 "
 PROPERTIES="live"
+
+FILECAPS=( -m 4710 -M 0710 cap_kill sbin/ninit-shutdown )
 
 pkg_setup() {
 	use test && python-any-r1_pkg_setup
@@ -69,7 +73,6 @@ src_configure() {
 }
 
 src_test() {
-	# the qemu tests boot the kernel named here, set it in /etc/portage/env
 	local -x NINIT_TEST_KERNEL=${NINIT_TEST_KERNEL}
 
 	if [[ -z ${NINIT_TEST_KERNEL} ]]; then
@@ -88,12 +91,18 @@ src_test() {
 src_install() {
 	default
 	use tools && emake DESTDIR="${D}" tools-install
+	if use power; then
+		fowners root:power /sbin/ninit-shutdown
+		fperms 0710 /sbin/ninit-shutdown
+	fi
 	dodoc -r docs/ninit.d
 	docompress -x /usr/share/doc/${PF}/ninit.d
 	keepdir /etc/ninit.d
 }
 
 pkg_postinst() {
+	use power && fcaps_pkg_postinst
+
 	elog "Example service files are in ${EROOT}/usr/share/doc/${PF}/ninit.d."
 	elog "Put service files in /etc/ninit.d and compile them with:"
 	elog "    ninitctl init"
@@ -101,6 +110,10 @@ pkg_postinst() {
 
 	if use debug; then
 		ewarn "USE=debug builds pid 1 with sanitizers"
+	fi
+
+	if use power; then
+		elog "Members of the power group may run poweroff, reboot and halt without root."
 	fi
 
 	if use tools; then
